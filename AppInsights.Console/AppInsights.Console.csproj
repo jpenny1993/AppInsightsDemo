@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
+      <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.21.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
     </ItemGroup>
 

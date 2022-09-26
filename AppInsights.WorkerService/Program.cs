@@ -1,12 +1,12 @@
 using AppInsights.WorkerService;
-using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.QuickPulse;
+using DomainLogic;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
+        services.AddTransient<FactService>();
         services.AddHostedService<Worker>();
         services.AddApplicationInsightsTelemetryWorkerService();
-        services.ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) => module.AuthenticationApiKey = host.configuration["APPINSIGHTS_QUICKPULSEAUTHAPIKEY"]);
     })
     .Build();
 

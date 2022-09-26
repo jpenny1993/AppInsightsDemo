@@ -1,23 +1,22 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
-using System.Net.Http;
-using System.Threading.Tasks;
+
+namespace AppInsights.Console;
 
 public static class Program
 {
    static void Main(string[] args)
    {
-      TelemetryConfiguration configuration = TelemetryConfiguration.CreateDefault();
+      var configuration = TelemetryConfiguration.CreateDefault();
 
-      configuration.ConnectionString = "removed";
+      configuration.ConnectionString = "PutConnectionStringHere";
       configuration.TelemetryInitializers.Add(new HttpDependenciesParsingTelemetryInitializer());
 
       var telemetryClient = new TelemetryClient(configuration);
       using (InitializeDependencyTracking(configuration))
       {
             // run app...
-
             telemetryClient.TrackTrace("Hello World!");
 
             using (var httpClient = new HttpClient())

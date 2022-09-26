@@ -1,3 +1,4 @@
+using DomainLogic;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 
@@ -5,32 +6,42 @@ namespace AppInsights.WorkerService;
 
 public class Worker : BackgroundService
 {
+    private static readonly Random Random = new ();
     private readonly ILogger<Worker> _logger;
-    private TelemetryClient _telemetryClient;
-    private static HttpClient _httpClient = new HttpClient();
+    private readonly TelemetryClient _telemetryClient;
+    private readonly FactService _factService;
 
-    public Worker(ILogger<Worker> logger, TelemetryClient tc)
+    public Worker(
+        ILogger<Worker> logger,
+        TelemetryClient telemetryClient,
+        FactService factService)
     {
         _logger = logger;
-        _telemetryClient = tc;
+        _telemetryClient = telemetryClient;
+        _factService = factService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            _logger.LogInformation("Worker running at: {Time}", DateTimeOffset.Now);
 
             using (_telemetryClient.StartOperation<RequestTelemetry>("worker operation"))
             {
-                _logger.LogWarning("A sample warning message. By default, logs with severity Warning or higher is captured by Application Insights");
-                _logger.LogInformation("Calling bing.com");
-                var res = await _httpClient.GetAsync("https://bing.com");
-                _logger.LogInformation("Calling bing completed with status:" + res.StatusCode);
-                _telemetryClient.TrackEvent("Bing call event completed");
+                _logger.LogWarning("A sample warning message...");
+                var factCount = Random.Next(1, 15);
+                var index = 1;
+                await foreach (var fact in _factService.GetMathFacts(factCount, stoppingToken))
+                {
+                    _logger.LogInformation("Fact {FactIndex}: {MathFact}", index, fact);
+                    index++;
+                }
+
+                _telemetryClient.TrackEvent("Math facts acquired");
             }
 
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(15), stoppingToken);
         }
     }
 }
