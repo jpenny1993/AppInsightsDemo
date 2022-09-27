@@ -1,22 +1,23 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace AppInsights.FunctionApp;
 
-public static class TimedEventFunc
+public static class Program
 {
-    [FunctionName("TimedEventFunc")]
-    public static async Task RunAsync(
-        [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
-        ILogger log)
+    public static void Main()
     {
-        log.LogInformation($"C# Timer trigger function executed at: {DateTime.UtcNow}");
-        
+        var host = new HostBuilder()
+            .ConfigureFunctionsWorkerDefaults()
+            .ConfigureServices((host, services) => services
+                   .AddOptions()
+                   .AddLogging()
+              ).Build();
+
+        host.Run();
     }
 }
+
 
 // using
 //     Microsoft.Azure.WebJobs.Logging.ApplicationInsights.WebJobsRoleEnvironmentTelemetryInitializer
