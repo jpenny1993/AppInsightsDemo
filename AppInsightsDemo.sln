@@ -1,19 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsights.Console", "AppInsights.Console\AppInsights.Console.csproj", "{678FB5C2-0044-46AC-86E8-8630AEE11B09}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppInsights.Console", "AppInsights.Console\AppInsights.Console.csproj", "{678FB5C2-0044-46AC-86E8-8630AEE11B09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsights.WorkerService", "AppInsights.WorkerService\AppInsights.WorkerService.csproj", "{7B1A0A7B-6893-4F1B-8293-B81E3C5F4ABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppInsights.WorkerService", "AppInsights.WorkerService\AppInsights.WorkerService.csproj", "{7B1A0A7B-6893-4F1B-8293-B81E3C5F4ABF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsights.WebApp", "AppInsights.WebApp\AppInsights.WebApp.csproj", "{C6696177-A00D-4E10-BE2A-2EFF7079C632}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppInsights.WebApp", "AppInsights.WebApp\AppInsights.WebApp.csproj", "{C6696177-A00D-4E10-BE2A-2EFF7079C632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsights.FunctionApp", "AppInsights.FunctionApp\AppInsights.FunctionApp.csproj", "{6BB27E91-7015-4FC6-A1AE-96394B423618}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainLogic", "DomainLogic\DomainLogic.csproj", "{99A0834E-089D-4D0C-B3D9-C44D7B34E55E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainLogic", "DomainLogic\DomainLogic.csproj", "{99A0834E-089D-4D0C-B3D9-C44D7B34E55E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{29496672-5F8B-48CB-B860-0D7B03B523E0}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppInsights.FunctionApp", "AppInsights.FunctionApp\AppInsights.FunctionApp.csproj", "{EBC98627-08EA-41F9-A301-8F5864F9B9B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,13 +36,19 @@ Global
 		{C6696177-A00D-4E10-BE2A-2EFF7079C632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6696177-A00D-4E10-BE2A-2EFF7079C632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6696177-A00D-4E10-BE2A-2EFF7079C632}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BB27E91-7015-4FC6-A1AE-96394B423618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BB27E91-7015-4FC6-A1AE-96394B423618}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BB27E91-7015-4FC6-A1AE-96394B423618}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BB27E91-7015-4FC6-A1AE-96394B423618}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99A0834E-089D-4D0C-B3D9-C44D7B34E55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99A0834E-089D-4D0C-B3D9-C44D7B34E55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A0834E-089D-4D0C-B3D9-C44D7B34E55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99A0834E-089D-4D0C-B3D9-C44D7B34E55E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBC98627-08EA-41F9-A301-8F5864F9B9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBC98627-08EA-41F9-A301-8F5864F9B9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBC98627-08EA-41F9-A301-8F5864F9B9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBC98627-08EA-41F9-A301-8F5864F9B9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FFACA19C-DB3C-4AEB-8083-4343C5C99AD9}
 	EndGlobalSection
 EndGlobal

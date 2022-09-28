@@ -1,36 +1,29 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using AppInsights.FunctionApp.Configuration;
+using Microsoft.ApplicationInsights;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Enrichers;
+using Serilog.Exceptions;
+using Serilog.Extensions.Logging;
 
-namespace AppInsights.FunctionApp;
+var host = new HostBuilder()
+    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureServices((host, services) => services
+        .AddOptions()
+        .Configure<ApiConfiguration>(host.Configuration.GetSection("ApiConfiguration"))
+        .AddSingleton<ILoggerProvider>((sp) =>
+        {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
+                .Enrich.With<CorrelationIdEnricher>()
+                .WriteTo.ApplicationInsights(sp.GetRequiredService<TelemetryClient>(), TelemetryConverter.Traces)
+                .CreateLogger();
+            return new SerilogLoggerProvider(Log.Logger, true);
+        })
+    )
+    .Build();
 
-public static class Program
-{
-    public static void Main()
-    {
-        var host = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults()
-            .ConfigureServices((host, services) => services
-                   .AddOptions()
-                   .AddLogging()
-              ).Build();
-
-        host.Run();
-    }
-}
-
-
-// using
-//     Microsoft.Azure.WebJobs.Logging.ApplicationInsights.WebJobsRoleEnvironmentTelemetryInitializer
-// Microsoft.Azure.WebJobs.Logging.ApplicationInsights.WebJobsTelemetryInitializer
-
-// return services
-//     .AddSingleton(sp =>
-//     {
-//         var telemetryConfiguration = TelemetryConfiguration.CreateDefault();
-//         telemetryConfiguration.TelemetryInitializers.Add(new OperationCorrelationTelemetryInitializer());
-//         var config = sp.GetService<IConfiguration>();
-//         var instrumentationKey = config.GetValue<string?>("APPINSIGHTS_INSTRUMENTATIONKEY");
-//         if (instrumentationKey != null)
-//             telemetryConfiguration.InstrumentationKey = instrumentationKey;
-//         return telemetryConfiguration;
-//     });
+host.Run();
