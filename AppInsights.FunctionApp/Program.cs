@@ -1,5 +1,7 @@
 using AppInsights.FunctionApp.Configuration;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,16 +14,21 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((host, services) => services
         .AddOptions()
-        .Configure<ApiConfiguration>(host.Configuration.GetSection("ApiConfiguration"))
         .AddSingleton<ILoggerProvider>((sp) =>
         {
+            var telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault());
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
                 .Enrich.With<CorrelationIdEnricher>()
-                .WriteTo.ApplicationInsights(sp.GetRequiredService<TelemetryClient>(), TelemetryConverter.Traces)
+                .WriteTo.ApplicationInsights(telemetryClient, TelemetryConverter.Traces)
                 .CreateLogger();
             return new SerilogLoggerProvider(Log.Logger, true);
+        })
+        .AddHttpClient("DemoApi", httpClient =>
+        {
+            var config = host.Configuration.GetSection("ApiConfiguration").Get<ApiConfiguration>();
+            httpClient.BaseAddress = new Uri(config.Url);
         })
     )
     .Build();

@@ -1,9 +1,6 @@
-using System;
 using System.Net.Http.Json;
-using AppInsights.FunctionApp.Configuration;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AppInsights.FunctionApp
 {
@@ -11,17 +8,14 @@ namespace AppInsights.FunctionApp
     {
         private readonly ILogger _logger;
         private readonly HttpClient _httpClient;
-        private readonly ApiConfiguration _apiConfig;
 
 
         public TimedEventFunc(
             ILoggerFactory loggerFactory,
-            IOptions<ApiConfiguration> apiOptions,
             IHttpClientFactory httpClientFactory)
         {
             _logger = loggerFactory.CreateLogger<TimedEventFunc>();
-            _httpClient = httpClientFactory.CreateClient();
-            _apiConfig = apiOptions.Value;
+            _httpClient = httpClientFactory.CreateClient("DemoApi");
         }
 
         [Function("TimedEventFunc")]
@@ -30,9 +24,9 @@ namespace AppInsights.FunctionApp
             _logger.LogInformation("C# Timer trigger function executed at: {ExecutionStartTime}", DateTime.Now);
             _logger.LogInformation("Next timer schedule at: {NextSheduledRunTime}", myTimer.ScheduleStatus.Next);
 
-            var result = await _httpClient.GetFromJsonAsync<string>($"{_apiConfig.Url}/math/fact?key={_apiConfig.Key}");
+            var result = await _httpClient.GetStringAsync("/math/fact");
 
-            _logger.LogInformation("That's all folks");
+            _logger.LogInformation("Acquired fact: {MathFact}", result);
         }
     }
 
