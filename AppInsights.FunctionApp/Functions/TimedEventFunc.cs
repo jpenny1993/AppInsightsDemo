@@ -25,8 +25,13 @@ namespace AppInsights.FunctionApp
             _logger.LogInformation("Next timer schedule at: {NextSheduledRunTime}", myTimer.ScheduleStatus.Next);
 
             var result = await _httpClient.GetStringAsync("/math/fact");
-
             _logger.LogInformation("Acquired fact: {MathFact}", result);
+
+            var response = await _httpClient.GetAsync("/throw");
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogWarning("Request failed with http status: {HttpStatusCode}", response.StatusCode);
+            }
         }
     }
 

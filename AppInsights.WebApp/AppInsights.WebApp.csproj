@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DomainLogic\DomainLogic.csproj" />
+      <ProjectReference Include="..\Pokedex\Pokedex.csproj" />
     </ItemGroup>
 
     <ItemGroup>
